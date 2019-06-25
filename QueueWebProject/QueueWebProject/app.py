@@ -100,7 +100,7 @@ def startqueue():
 	return "Start Queue"
 
 @app.route('/endque')
-def startqueue():
+def endqueue():
 	return "End Queue"
 
 @app.route('/')
