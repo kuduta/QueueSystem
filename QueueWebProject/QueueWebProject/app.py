@@ -11,6 +11,14 @@ import sys
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+os.path.join(basedir, 'queue.sqlite')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+
+db = SQLAlchemy(app)
 
 
 
@@ -58,9 +66,7 @@ class Queue:
 ###### end classs queue #######
 
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////data/queue.db'
-db = SQLAlchemy(app)
+
 
 # Make the WSGI interface available at the top level so wfastcgi can get it.
 wsgi_app = app.wsgi_app
@@ -69,6 +75,7 @@ wsgi_app = app.wsgi_app
 # command >>> db.create_all()
 
 class Data(db.Model):
+    #Table name
     __tablename__ = "tbqueue"
     id = db.Column(db.Integer, primary_key=True)
     numQue_ = db.Column(db.String(10))
