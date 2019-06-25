@@ -2,12 +2,15 @@
 This script runs the application using a development server.
 It contains the definition of routes and views for the application.
 """
+import os
 import queue
 import pygame
 import time
 import sys
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+
 
 
 
