@@ -1,7 +1,12 @@
 """
 This script runs the application using a development server.
 It contains the definition of routes and views for the application.
+
+command >>> from api import db
+command >>> db.create_all()
 """
+
+
 import os
 import queue
 import pygame
@@ -71,8 +76,7 @@ class Queue:
 # Make the WSGI interface available at the top level so wfastcgi can get it.
 wsgi_app = app.wsgi_app
 
-# command >>> from api import db
-# command >>> db.create_all()
+
 
 class Data(db.Model):
     #Table name
