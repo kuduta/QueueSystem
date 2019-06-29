@@ -13,7 +13,8 @@ import pygame
 import time
 import sys
 
-from flask import Flask
+from datetime import datetime
+from flask import Flask , request
 from flask_sqlalchemy import SQLAlchemy
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -100,8 +101,13 @@ class Data(db.Model):
 
 
 
-@app.route('/addque')
+@app.route('/addque/<numtype>',methods=['GET'])
 def addqueue():
+    numtype = request.args.get('numtype')
+    dtnow = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    
+    
+    
 	return "Add Queue"
 
 @app.route('/reqque')
