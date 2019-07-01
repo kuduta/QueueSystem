@@ -11,7 +11,7 @@ import sqlalchemy as db
 import pandas as pd
 from datetime import datetime
 
-from flask import Flask , request
+from flask import Flask , request ,jsonify
 
 
 app = Flask(__name__)
@@ -77,6 +77,7 @@ for row in result:
 def addqueue(numtype):
     #1. check type of queue in table tbqueue type have 6 type
     dtsearch = datetime.now().strftime('%Y-%m-%d')
+    dtnow = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     query=db.select([tbqueue]).where(db.and_(tbqueue.columns.dtReqest_.like(dtsearch+'%'),\
                     tbqueue.columns.numType_ == numtype)).order_by(tbqueue.columns.id.desc()).limit(1)
     result = connection.execute(query)
@@ -90,9 +91,17 @@ def addqueue(numtype):
         number = 1
         quenumber = numtype+str(number).zfill(4)
         
-
+    # insert data to stack queue
     que = Queue()
-    que.enqueue(quenumber)      
+    que.enqueue(quenumber)
+    
+    # insert data to sqlite
+    ins = tbqueue.insert().values(numQue_=quenumber, numType_ =numtype,dtReqest_=dtnow)
+    connection.execute(ins)
+    
+    
+    return jsonify( quenumber=quenumber,sizeque=que.size(), daterequest= dtnow )
+        
     
     
     
@@ -109,7 +118,7 @@ def addqueue(numtype):
      
     #numtype = request.args.get('numtype')
     #dtnow = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    return "Add Queue {}".format(numtype)
+    #return "Add Queue {}".format(numtype)
 
 @app.route('/reqque')
 def reqqueue():
