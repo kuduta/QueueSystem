@@ -12,11 +12,6 @@ import pandas as pd
 from datetime import datetime
 
 from flask import Flask , request
-from pygame import mixer
-from sqlalchemy.orm import sessionmaker
-
-
-
 
 
 app = Flask(__name__)
@@ -28,9 +23,6 @@ engine = db.create_engine('sqlite:///queue.sqlite')
 connection = engine.connect()
 metadata=db.MetaData()
 tbqueue = db.Table('tbqueue', metadata, autoload=True, autoload_with=engine)
-
-Session = sessionmaker(bind = engine)
-session = Session()
 
 '''
 result = session.query(tbqueue).all()
@@ -85,7 +77,33 @@ for row in result:
 def addqueue(numtype):
     #1. check type of queue in table tbqueue type have 6 type
     dtsearch = datetime.now().strftime('%Y-%m-%d')
+    query=db.select([tbqueue]).where(db.and_(tbqueue.columns.dtReqest_.like(dtsearch+'%'),\
+                    tbqueue.columns.numType_ == numtype)).order_by(tbqueue.columns.id.desc()).limit(1)
+    result = connection.execute(query)
+    df = pd.DataFrame(result)
+    # df[1] is number queue
     
+    if df[1] != "":
+        number = int(df[1])
+        quenumber = numtype+str(number).zfill(4)
+    else :
+        number = 1
+        quenumber = numtype+str(number).zfill(4)
+        
+
+    que = Queue()
+    que.enqueue(quenumber)      
+    
+    
+    
+        
+    
+        
+    #insert data to db and add queue
+    
+        
+        
+        
     #2. if type of queue is empty add queue in type qu
     #3.    
      
@@ -95,6 +113,7 @@ def addqueue(numtype):
 
 @app.route('/reqque')
 def reqqueue():
+    
 	return "Reqest Queue"
 
 
