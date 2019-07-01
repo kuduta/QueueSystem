@@ -84,7 +84,7 @@ class Data(db.Model):
     __tablename__ = "tbqueue"
     id = db.Column(db.Integer, primary_key=True)
     numQue_ = db.Column(db.String(10))
-    numberType_ = db.Column(db.String(10))
+    numType_ = db.Column(db.String(10))
     counter_ = db.Column(db.String(10))
     dtReqest_ = db.Column(db.String(30))
     dtStart_ = db.Column(db.String(30))
@@ -102,12 +102,9 @@ class Data(db.Model):
 
 
 @app.route('/addque/<numtype>',methods=['GET'])
-def addqueue():
-    numtype = request.args.get('numtype')
-    dtnow = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    
-    
-    
+def addqueue(numtype):
+    #numtype = request.args.get('numtype')
+    #dtnow = datetime.now().strftime('%Y-%m-%d %H:%M:%S')  
 	return "Add Queue"
 
 @app.route('/reqque')
