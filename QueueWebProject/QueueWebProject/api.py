@@ -64,62 +64,102 @@ class Queue:
 
 ###### end classs queue #######       
 
+que1 = Queue()
+que2 = Queue()
+que3 = Queue()
+que4 = Queue()
+que5 = Queue()
 
+que5.enqueue('31231242')
+que5.printQueue()
+que5.dequeue()
 '''
 query=db.select([tbqueue])
 result = connection.execute(query)
 
 for row in result:
     print(row)
-'''    
+    
+'''
 
-@app.route('/addque/<numtype>',methods=['GET'])
-def addqueue(numtype):
-    #1. check type of queue in table tbqueue type have 6 type
+
+def dbquery(typenumber):
     dtsearch = datetime.now().strftime('%Y-%m-%d')
-    dtnow = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    dtnow = datetime.now().strftime('%Y-%m-%d %H:%M:%S') 
     query=db.select([tbqueue]).where(db.and_(tbqueue.columns.dtReqest_.like(dtsearch+'%'),\
-                    tbqueue.columns.numType_ == numtype)).order_by(tbqueue.columns.id.desc()).limit(1)
+                    tbqueue.columns.numType_ == typenumber)).order_by(tbqueue.columns.id.desc()).limit(1)
     result = connection.execute(query)
     df = pd.DataFrame(result)
-    # df[1] is number queue
+        # df[1] is number queue
     
     if df[1] != "":
         number = int(df[1])
-        quenumber = numtype+str(number).zfill(4)
+        quenumber = typenumber+str(number).zfill(4)
     else :
         number = 1
-        quenumber = numtype+str(number).zfill(4)
+        quenumber = typenumber+str(number).zfill(4)
+    
+    return quenumber, dtnow
+    
+    
+@app.route('/addque/<numtype>',methods=['GET'])
+def addqueue(numtype):
+    
+        #1. check type of queue in table tbqueue type have 6 type
+      
+    
+    if numtype == '1':
+        #dbquery(numtype) 
+        quenum,datenow = dbquery(numtype)
+        que1.enqueue(quenum)
         
-    # insert data to stack queue
-    que = Queue()
-    que.enqueue(quenumber)
-    
-    # insert data to sqlite
-    ins = tbqueue.insert().values(numQue_=quenumber, numType_ =numtype,dtReqest_=dtnow)
-    connection.execute(ins)
-    
-    
-    return jsonify( quenumber=quenumber,sizeque=que.size(), daterequest= dtnow )
+        ins = tbqueue.insert().values(numQue_=quenum, numType_=numtype, dtReqest_=datenow)
+        connection.execute(ins)
+       
+        return jsonify( quenumber=quenum,sizeque=que1.size(), daterequest= datenow )
         
-    
-    
-    
-        
-    
-        
-    #insert data to db and add queue
-    
-        
-        
-        
-    #2. if type of queue is empty add queue in type qu
-    #3.    
-     
-    #numtype = request.args.get('numtype')
-    #dtnow = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    #return "Add Queue {}".format(numtype)
 
+    elif numtype == '2':
+        quenum,datenow = dbquery(numtype)
+        que2.enqueue(quenum)
+        
+        ins = tbqueue.insert().values(numQue_=quenum, numType_=numtype, dtReqest_=datenow)
+        connection.execute(ins)
+       
+        return jsonify( quenumber=quenum,sizeque=que2.size(), daterequest= datenow )
+               
+    elif numtype == '3':
+        quenum,datenow = dbquery(numtype)
+        que3.enqueue(quenum)
+        
+        ins = tbqueue.insert().values(numQue_=quenum, numType_=numtype, dtReqest_=datenow)
+        connection.execute(ins)
+       
+        return jsonify( quenumber=quenum,sizeque=que3.size(), daterequest= datenow )
+ 
+    elif numtype == '4':
+        quenum,datenow = dbquery(numtype)
+        que2.enqueue(quenum)
+        
+        ins = tbqueue.insert().values(numQue_=quenum, numType_=numtype, dtReqest_=datenow)
+        connection.execute(ins)
+       
+        return jsonify( quenumber=quenum,sizeque=que2.size(), daterequest= datenow )
+       
+    elif numtype == '5':
+        
+        pquenum,datenow = dbquery(numtype)
+        que2.enqueue(quenum)
+        
+        ins = tbqueue.insert().values(numQue_=quenum, numType_=numtype, dtReqest_=datenow)
+        connection.execute(ins)
+       
+        return jsonify( quenumber=quenum,sizeque=que2.size(), daterequest= datenow )
+    
+    else:
+        return 0
+        
+        
 @app.route('/reqque')
 def reqqueue():
     
