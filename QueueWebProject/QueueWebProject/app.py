@@ -13,7 +13,11 @@ import pygame
 import sys
 
 from datetime import datetime
+<<<<<<< HEAD
 from flask import Flask
+=======
+from flask import Flask , request
+>>>>>>> 5b806513d63e9dca74b4acf3c8bac76691cb4a25
 from flask_sqlalchemy import SQLAlchemy
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -83,7 +87,7 @@ class Data(db.Model):
     __tablename__ = "tbqueue"
     id = db.Column(db.Integer, primary_key=True)
     numQue_ = db.Column(db.String(10))
-    numberType_ = db.Column(db.String(10))
+    numType_ = db.Column(db.String(10))
     counter_ = db.Column(db.String(10))
     dtReqest_ = db.Column(db.String(30))
     dtStart_ = db.Column(db.String(30))
@@ -100,8 +104,10 @@ class Data(db.Model):
 
 
 
-@app.route('/addque')
-def addqueue():
+@app.route('/addque/<numtype>',methods=['GET'])
+def addqueue(numtype):
+    #numtype = request.args.get('numtype')
+    #dtnow = datetime.now().strftime('%Y-%m-%d %H:%M:%S')  
 	return "Add Queue"
 
 @app.route('/reqque')
