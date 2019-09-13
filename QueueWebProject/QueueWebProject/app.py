@@ -10,9 +10,9 @@ command >>> db.create_all()
 import os
 import queue
 import pygame
-import time
 import sys
 
+from datetime import datetime
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
